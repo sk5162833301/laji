@@ -1,0 +1,71 @@
+1.jsx的一些内容
+    标签必须要闭合<input/>
+
+    在外层只能有一个根元素
+    
+    class ==> className
+    
+    srtle ==> {{background:"red"}}
+    
+    onClick
+        onClick={()=>{alert(1)}}
+        注意：this的指向，建议采用箭头函数，因为箭头函数内部的this与定义这个函数的外部的this是同一个this
+    
+    input的value值
+        handleChange = (e)=>{
+            this.setState({
+                value:e.target.value
+            })
+        }
+        <input value={this.state.value} onChange={this.handleChange} />
+
+        如果只是简单的显示值的话，那么就可以采用defaultValue
+                <input defaultValue="我是默认值" />
+
+
+    checkbox的checked
+        checked  必须要配合onChange事件，写成受控组件的形式
+        否则就采用defaultChecked
+
+    label的属性 for ==> htmlFor   点击元素获取输入框的焦点
+
+    jsx的原理
+        jsx的的代码通过babel进行编译(通过React.createElement的方法)，转成js内存对象(虚拟dom)，然后经过ReactDOM.render进行爆发式渲染，将虚拟DOM转成真实DOM
+
+
+2.父子组件通信
+    父组件可以将自己的状态通过属性的方式传递给子组件，然后子组件通过props获取到传递来的属性
+
+
+3.子父组件通信
+    父组件可以将一个更改自身状态的方法传递给子组件，然后子组件通过props接收后进行调用，相当于父组件的方法被执行了，从而更改了自身的状态。
+
+4.兄弟组件通信   (https://www.jianshu.com/p/c4d3e194a699)
+    这个思想搬到代码里就是 EventHub，
+    其主要功能就是发布事件(on监听)和订阅事件(trigger 触发)
+     
+
+5. mock数据工具 - json-server (可以将本地的一个json文件启动起来，做成一个接口服务)
+    https://gitee.com/rh_hg/json-server?_from=gitee_search
+        npm i json-server -g
+        json-server --version
+        json-server .\data.json --port 4000 -w
+
+
+6.代理配置
+    如果后端没有帮助我们配置跨域处理，需要我们前端手动的进行代理配置
+    node_modules>react-scripts>config>devServer.js
+        proxy:{
+        "/api":{
+            target:"http://47.96.0.211:9000",
+            changeOrigin:true,
+            pathRewrite:{
+            "^/api":""
+            }
+        }
+    }
+    但是有问题，后续安装新的模块的时候，内部的yarn.lock文件实时检测node_modeles下面的文件是否手动的更改过，如果更改的话，重新变成初始状态
+    
+    解决方案：
+        可以通过yarn eject 进行react-scripts相关文件的配置抽离操作
+        
